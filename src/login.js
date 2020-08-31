@@ -1,40 +1,59 @@
-import React, { Component, useState } from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
-import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import { AuthService } from './services/auth_service';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+// import { AuthService } from "./services/auth_service";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // const [token, setToken] = useState("");
 
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  async function handleLogin(email, password) {
+    await axios
+      .post("http://18.209.105.43:3000/api/login", {
+        data: {
+          email: "matias@gmail.com",
+          password: "matias20",
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      })
+      .then(
+        result => {
+          console.log(result);          
+          var token = result.data;          
+        },
+        (error) => console.log(error.response.data)
+      );
+  }
 
-    function handleLogin() {
-        const service = new AuthService();
-        service.loginWithEmailPassword(email, password);
-    }
+  return (
+    <div>
+      <label>
+        Email:
+        <input
+          type="text"
+          onChange={(email) => setEmail(email.target.value)}
+          value={email}
+        />
+      </label>
+      <label>
+        Contraseña:
+        <input
+          type="text"
+          onChange={(password) => setPassword(password.target.value)}
+          value={password}
+        />
+      </label>
+      <button onClick={() => handleLogin(email, password)}>Login</button>
 
-    return (
-        <div>
-            <form>
-                <label>
-                    Email:
-            <input type="text" onChange={email => setEmail(email)} />
-                </label>
-                <label>
-                    Contraseña:
-            <input type="text" onChange={password => setPassword(password)} />
-                </label>
-                <button onClick={handleLogin()}>Login</button>
-            </form>
-            <p>Todavia no tienes cuenta?</p><Link to='/register'>Regsitrate</Link>
-        </div>
-    );
+      <p>Todavia no tienes cuenta?</p>
+      <Link to="/register">Regsitrate</Link>
+    </div>
+  );
 }
 
 export default Login;

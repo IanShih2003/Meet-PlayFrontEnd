@@ -10,10 +10,10 @@ import { Redirect } from 'react-router-dom';
 
 export class Confirm extends Component {
 
-  handleRegister = (user, age, email, password, repeatpass, description, lang, games, nat) => {
+  handleRegister = (user, age, email, password, repeatpass, description, lang, games, rol, rank, nat) => {
     var registro;
     const service = new AuthService();
-    registro = service.register(user, age, email, password, repeatpass, description, lang, games, nat);
+    registro = service.register(user, age, email, password, repeatpass, description, lang, games, rol, rank, nat);
     if (registro) {
       return <Redirect push to='/'/>
     }
@@ -35,7 +35,7 @@ export class Confirm extends Component {
 
   render() {
     const {
-      values: { user, age, email, password, repeatpass, description, lang, games, nat }
+      values: { user, age, email, password, repeatpass, description, lang, games,rol, rank, nat }
     } = this.props;
     return (
       <MuiThemeProvider>
@@ -65,6 +65,12 @@ export class Confirm extends Component {
                 <ListItemText primary="Juegos" secondary={games} />
               </ListItem>
               <ListItem>
+                <ListItemText primary="Juegos" secondary={rol} />
+              </ListItem>
+              <ListItem>
+                <ListItemText primary="Juegos" secondary={rank} />
+              </ListItem>
+              <ListItem>
                 <ListItemText primary="Nacionalidad/es" secondary={nat} />
               </ListItem>
             </List>
@@ -79,7 +85,7 @@ export class Confirm extends Component {
             <Button
               color="primary"
               variant="contained"
-              onClick={() => this.handleRegister(user, age, email, password, repeatpass, description, lang, games, nat)}
+              onClick={() => this.handleRegister(user, age, email, password, repeatpass, description, lang, games, rol, rank, nat)}
             >Confirmar y Continuar</Button>
           </Dialog>
         </>
